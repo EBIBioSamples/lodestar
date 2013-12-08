@@ -6,7 +6,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <context:property-placeholder location="classpath:lode.properties" ignore-unresolvable="true" ignore-resource-not-found="true" />
+    <context:property-placeholder 
+      location="classpath:lode.properties,file:///nfs/public/rw/rdf/webapps/${tomcat.hostname}/biosamples_rdf_sparql.properties" 
+      ignore-unresolvable="true" ignore-resource-not-found="true" />
 
     <context:annotation-config/>
 
@@ -18,37 +20,30 @@
         <property name="service" ref="explorerServiceImpl"/>
     </bean>
 
+    <bean id="virtuosoDataSourceProvider" class="uk.ac.ebi.fgpt.lode.impl.VirtuosoDatasourceProvider">
+        <constructor-arg name="endpointUrl" value="${lode.sparqlendpoint.url}"/>
+        <constructor-arg name="port" value="${lode.sparqlendpoint.port}"/>
+    </bean>
 
-
-    <!--Uncomment these two beans for virtuoso connection pooling-->
-    <!--<bean id="jenaVirtuosoConnectionPoolService" class="uk.ac.ebi.fgpt.lode.impl.JenaVirtuosoConnectionPoolService">-->
-        <!--<constructor-arg ref="virtuosoDataSourceProvider"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="virtuosoDataSourceProvider" class="uk.ac.ebi.fgpt.lode.impl.VirtuosoDatasourceProvider">-->
-        <!--<constructor-arg name="endpointUrl" value="${lode.sparqlendpoint.url}"/>-->
-        <!--<constructor-arg name="port" value="${lode.sparqlendpoint.port}"/>-->
-    <!--</bean>-->
-
-     <!--For direct virtuoso JDBC connection, use this service-->
-    <!--<bean id="jenaVirtuosoExecutorService" class="uk.ac.ebi.fgpt.lode.impl.JenaVirtuosoExecutorService">-->
-    <!--</bean>-->
-
-    <!--
-       A basic HTTP service bean for connecting to SPARQL endpoint
-    -->
-    <bean id="jenaHttpExecutorService" class="uk.ac.ebi.fgpt.lode.impl.JenaHttpExecutorService">
+    <bean id="jenaVirtuosoConnectionPoolService" class="uk.ac.ebi.fgpt.lode.impl.JenaVirtuosoConnectionPoolService">
+        <constructor-arg ref="virtuosoDataSourceProvider"/>
     </bean>
 
 
+    <!--<bean id="jenaVirtuosoExecutorService" class="uk.ac.ebi.fgpt.lode.impl.JenaVirtuosoExecutorService">-->
+    <!--</bean>-->
+
+<!--     <bean id="jenaHttpExecutorService" class="uk.ac.ebi.fgpt.lode.impl.JenaHttpExecutorService"> -->
+<!--     </bean> -->
+
     <bean id="jenaSparqlService" class="uk.ac.ebi.fgpt.lode.impl.JenaSparqlService">
         <property name="maxQueryLimit" value="${lode.sparql.query.maxlimit}"/>
-        <property name="queryExecutionService" ref="jenaHttpExecutorService"/>
+        <property name="queryExecutionService" ref="jenaVirtuosoConnectionPoolService"/>
     </bean>
 
     <bean name="explorerServiceImpl" class="uk.ac.ebi.fgpt.lode.impl.JenaExploreService">
         <property name="queryReader" ref="queryReader"/>
-        <property name="queryExecutionService" ref="jenaHttpExecutorService"/>
+        <property name="queryExecutionService" ref="jenaVirtuosoConnectionPoolService"/>
     </bean>
 
     <bean id="sparqlServlet" class="uk.ac.ebi.fgpt.lode.servlet.SparqlServlet">

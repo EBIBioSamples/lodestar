@@ -117,22 +117,24 @@ function _parseOptions(options) {
 
 function _buildVoid(element) {
 
-    var voidSparql = "PREFIX dcterms: <http://purl.org/dc/terms/> " +
-        "PREFIX void: <http://rdfs.org/ns/void#> " +
-        "PREFIX pav: <http://purl.org/pav/2.0/> " +
-        "PREFIX prov: <http://www.w3.org/ns/prov#> " +
-        "SELECT ?dataset ?title ?description ?version ?triples ?created ?previous " +
-        "where { " +
-        "?dataset a void:Dataset ; " +
-        "dcterms:title ?title; " +
-        "dcterms:description ?description ;  " +
-        "pav:version ?version;      " +
-        "dcterms:issued ?created;   " +
-        "void:triples ?triples ;   " +
-        "prov:specializationOf ?data . " +
-        "?data pav:previousVersion ?previous .  " +
-        "}                   " +
-        "ORDER BY DESC(?previous)";
+    var voidSparql = 
+			"PREFIX dcterms: <http://purl.org/dc/terms/>\n" +
+			"PREFIX void: <http://rdfs.org/ns/void#>\n" +
+			"PREFIX pav: <http://purl.org/pav/2.0/>\n" +
+			"PREFIX prov: <http://www.w3.org/ns/prov#>\n" +
+			"SELECT ?dataset ?title ?description ?version ?triples ?created ?previous\n" +
+			"WHERE {\n" +
+			"  ?dataset a void:Dataset;\n" +
+			"    dcterms:title ?title;\n" +
+			"    dcterms:description ?description;\n" +
+			"    pav:version ?version;\n" +
+			"    pav:importedOn ?created;\n" +
+			"    void:triples ?triples.\n" +
+			"    OPTIONAL {\n" +
+			"      ?dataset prov:specializationOf \n" +
+			"      [ pav:previousVersion ?previous ]\n" +
+			"    }\n" +
+			"} ORDER BY DESC ( ?previous )\n";
 
 
     $.ajax ( {
