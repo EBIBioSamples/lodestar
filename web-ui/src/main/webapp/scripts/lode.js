@@ -87,7 +87,32 @@ function _parseOptions(options) {
         'results_per_page' : 25,
         'inference' : false,
         'logging' : false,
-        'default_query' : "SELECT DISTINCT ?class \nwhere {[] a ?class}",
+        'default_query' : 
+					"#\n" +
+					"## Samples with a given property value and type, and external links\n" +
+					"#\n" +
+					"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel ?repoName ?repoAcc ?repoUrl\n" +
+					"WHERE {\n" +
+					"  ?smp\n" +
+					"    a biosd-terms:Sample;\n" +
+					"    biosd-terms:has-bio-characteristic|obo:IAO_0000136 ?pv; # is about\n" +
+					"    pav:derivedFrom ?webRec.\n" +
+					"\n" +
+					"  ?pv\n" + 
+					"    a ?pvType;\n" +
+					"    rdfs:label ?pvLabel.\n" +
+					"\n" +
+					"  ?pvType\n" + 
+					"    rdfs:label ?propTypeLabel.\n" +
+					"\n" +
+					"  FILTER ( REGEX ( STR ( ?propTypeLabel ), \"^organism$\", \"i\" ) ).\n" +
+					"  FILTER ( REGEX ( STR ( ?pvLabel ), \".*sapiens.*\", \"i\" ) ).\n" +
+					"\n" +
+					"  ?webRec\n" +
+					"    dcterms:identifier ?repoAcc;\n" +
+					"    dcterms:source ?repoName;\n" +
+					"    foaf:page ?repoUrl.\n" +
+					"}\n",
         'void_query' : "SELECT DISTINCT ?s ?p ?o \nwhere {?s a <http://rdfs.org/ns/void#Dataset>\n OPTIONAL {?s ?p ?o} }",
         'namespaces' : {
             rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',

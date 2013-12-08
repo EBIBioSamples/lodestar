@@ -18,5 +18,8 @@ var lodeNamespacePrefixes = {
     dcterms: 'http://purl.org/dc/terms/',
     obo: 'http://purl.obolibrary.org/obo/',
     efo: 'http://www.ebi.ac.uk/efo/',
-    'biosd-terms': 'http://rdf.ebi.ac.uk/terms/biosd/'
+    'biosd-terms': 'http://rdf.ebi.ac.uk/terms/biosd/',
+    pav: 'http://purl.org/pav/2.0/',
+    foaf: 'http://xmlns.com/foaf/0.1/',
+    sio: 'http://semanticscience.org/resource/'
 };
