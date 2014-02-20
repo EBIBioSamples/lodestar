@@ -85,7 +85,7 @@ function _parseOptions(options) {
         'query_servlet_name': 'query',
         'explore_servlet_name': 'explore',
         'results_per_page' : 25,
-        'inference' : false,
+        'inference' : true,
         'logging' : false,
         'default_query' : 
 					"#\n" +
