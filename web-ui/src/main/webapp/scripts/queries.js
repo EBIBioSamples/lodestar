@@ -34,99 +34,139 @@ var exampleQueries = [
       query:        
 				"#\n" +
 				"## Samples with a given property value and type, and external links\n" +
+				"## This version doesn't exploit any ontology for sample properties.\n" +
 				"#\n" +
 				"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel ?repoName ?repoAcc ?repoUrl\n" +
-				"WHERE {\n" +
+				"WHERE \n" +
+				"{\n" +
 				"  ?smp\n" +
 				"    a biosd-terms:Sample;\n" +
-				"    biosd-terms:has-bio-characteristic|obo:IAO_0000136 ?pv; # is about\n" +
+				"    biosd-terms:has-bio-characteristic | sio:SIO_000332 ?pv; # is about\n" +
 				"    pav:derivedFrom ?webRec.\n" +
 				"\n" +
-				"  ?pv\n" + 
-				"    a ?pvType;\n" +
-				"    rdfs:label ?pvLabel.\n" +
-				"\n" +
-				"  ?pvType\n" + 
+				"  ?pv\n" +
+				"    rdfs:label ?pvLabel;\n" +
+				"    biosd-terms:has-bio-characteristic-type ?pvType.\n" +
+				"  \n" +
+				"  ?pvType \n" +
 				"    rdfs:label ?propTypeLabel.\n" +
 				"\n" +
-				"  FILTER ( REGEX ( STR ( ?propTypeLabel ), \"^organism$\", \"i\" ) ).\n" +
-				"  FILTER ( REGEX ( STR ( ?pvLabel ), \".*sapiens.*\", \"i\" ) ).\n" +
+				"\n" +
+				"  FILTER ( LCASE ( STR ( ?propTypeLabel ) ) = "organism" ).\n" +
+				"  FILTER ( LCASE ( STR ( ?pvLabel ) ) = "homo sapiens" ).\n" +
 				"\n" +
 				"  ?webRec\n" +
 				"    dcterms:identifier ?repoAcc;\n" +
 				"    dcterms:source ?repoName;\n" +
 				"    foaf:page ?repoUrl.\n" +
-				"}\n" 
+				"}\n"
     },
 
     {
-      shortname: "Samples treated with monocyclic heteroarene",
+      shortname: "Samples that derives from a given organism",
       description: 
-      	"Samples treated with a compound of 'monocyclic heteroarene' type." +
+      	"Samples derived from the Listeria organism or specific types of listeria, as they are classified by." +
+        " the NCBI Taxonomy.",
+      query:
+				"#\n" +
+				"## All samples that derives from a given organism (Listeria)\n" +
+				"#\n" +
+				"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel\n" +
+				"WHERE {\n" +
+				"  ?smp biosd-terms:has-bio-characteristic ?pv.\n" +
+				"  \n" +
+				"  ?pv biosd-terms:has-bio-characteristic-type ?pvType;\n" +
+				"      rdfs:label ?pvLabel.\n" +
+				"  \n" +
+				"  ?pvType a ?pvTypeClass.\n" +
+				"  \n" +
+				"  # Listeria\n" +
+				"  ?pvTypeClass \n" +
+				"    rdfs:label ?propTypeLabel;\n" +
+				"    # '*' gives you transitive closure, even when inference is didsbled  \n" +
+				"    rdfs:subClassOf* <http://purl.obolibrary.org/obo/NCBITaxon_1637>    \n" +
+				"}\n"
+    },
+
+    {
+      shortname: "Samples treated with alchool",
+      description: 
+      	"Samples treated with a compound of 'alchool' type, or a more specific type of alchool." +
         " This is made through a query over the bioportal sparql endpoint (i.e., a federated query).",
       query:
-				"\n" +
-				"# For each subclass of a given CHEBI compound, find samples annotated with\n" +
-				"# it.\n" +
-				"\n" +
-				"select distinct ?smp ?pvLabel ?propTypeLabel ?pvType\n" +
+				"#\n" +
+				"## All samples treated with a compound of 'alchool' type or a more specific alchool type\n" +
+				"#  this is made through a query over the bioportal sparql endpoint (ie, a federated query)\n" +
+				"#\n" +
+				"SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvType\n" +
 				"{\n" +
-				"  SERVICE <http://sparql.bioontology.org/ontologies/sparql/?apikey=c6ae1b27-9f86-4e3c-9dcf-087e1156eabe> {\n" +
-				"    ?pvType rdfs:subClassOf <http://purl.obolibrary.org/obo/CHEBI_38179>; # monocyclic heteroarene\n" +
-				"            rdfs:label ?pvTypeLabel.\n" +
+				"  SERVICE <http://sparql.bioontology.org/ontologies/sparql/?apikey=c6ae1b27-9f86-4e3c-9dcf-087e1156eabe> \n" +
+				"  {\n" +
+				"    ?pvTypeClass \n" +
+				"      rdfs:subClassOf <http://purl.obolibrary.org/obo/CHEBI_30879>; \n" +
+				"      rdfs:label ?pvTypeLabel.\n" +
 				"  }\n" +
 				"\n" +
+				"  ?pvType \n" +
+				"    a ?pvTypeClass. \n" +
+				"\n" +
+				"  ?pv \n" +
+				"    biosd-terms:has-bio-characteristic-type ?pvType;\n" +
+				"    rdfs:label ?pvLabel.\n" +
+				"  \n" +
 				"  ?smp \n" +
 				"    a biosd-terms:Sample;\n" +
 				"    biosd-terms:has-bio-characteristic ?pv.\n" +
-				"  \n" +
-				"  ?pv a ?pvType;\n" +
-				"      rdfs:label ?pvLabel.\n" +
-				"  \n" +
-				"  ?pvType rdfs:label ?propTypeLabel.\n" +
-				"\n" +
 				"}\n"
     },
 
     {
         shortname :
-        	"Weight values and units",
+        	"Temperature values and units",
         description:
         	"This shows how numerical values and units are represented in RDF. When possible, dates are detected and represented " + 
-        	"the same way, using xsd^dateTime.",
+        	"the same way, using xsd^dateTime. This query requires that you tick on the inference box.",
         query: 
-					"# \n" +
-					"# Weight values and units\n" +
 					"#\n" +
-					"select distinct ?smp ?wval ?wvalLabel ?wunitLabel ?wunitClass\n" +
-					"where {\n" +
+					"## Samples with temperature attributes. DO REQUIRE Inference enabled\n" +
+					"#\n" +
+					"select distinct ?smp ?pvTypeLabel ?tvalLabel ?tval ?tunitLabel ?tunitClass\n" +
+					"where \n" +
+					"{\n" +
 					"  ?smp \n" +
 					"    a biosd-terms:Sample;\n" +
-					"    biosd-terms:has-bio-characteristic ?wPv.\n" +
+					"    biosd-terms:has-bio-characteristic | sio:SIO_000332 ?tPv. # is about\n" +
 					"    \n" +
-					"  ?wPv \n" +
-					"    a [ rdfs:label ?wlabel];\n" +
-					"    sio:SIO_000300 ?wval; # sio:has value\n" +
-					"    rdfs:label ?wvalLabel; # contains a string composed with value and unit\n" +
-					"    sio:SIO_000221 [ # sio:has unit\n" +
-					"      a ?wunitClass;\n" +
-					"      rdfs:label ?wunitLabel # contains the original label given to the unit\n" +
-					"    ]. \n" +
+					"  ?tPv \n" +
+					"    sio:SIO_000300 ?tval; # sio:has value\n" +
+					"    rdfs:label ?tvalLabel; # contains a string composed with value and unit\n" +
+					"    sio:SIO_000221 [ a ?tunitClass ]. # sio:has unit\n" +
+					"  \n" +
+					"  \n" +
+					"  ?tunitClass \n" +
+					"    rdfs:subClassOf ?tunitClass1. # You can do this or use the inference flag\n" +
+					"    \n" +
+					"  ?tunitClass1 \n" +
+					"    rdfs:label ?tunitLabel\n" +
 					"\n" +
-					"  FILTER ( ?wunitClass != owl:NamedIndividual ).  \n" +
-					"  FILTER ( ?wunitClass != sio:SIO_000074 ). # unit, obvious  \n" +
-					"  FILTER ( REGEX ( ?wlabel, \"weight\", \"i\" ) ).\n" +
-					"}\n"    
+					"  FILTER ( ?tunitClass != owl:NamedIndividual ).  \n" +
+					"  FILTER ( ?tunitClass != sio:SIO_000074 ). # unit, obvious  \n" +
+					"  FILTER ( REGEX ( ?tunitLabel, "temperature", "i" ) ).\n" +
+					"\n" +
+					"  \n" +
+					"  ?tPv biosd-terms:has-bio-characteristic-type ?pvType.\n" +
+					"  ?pvType rdfs:label ?pvTypeLabel \n" +
+					"}\n"  
 			}, 
 			
 	    {
         shortname :
         	"Attribute values with intervals.",
         description:
-        	"This shows how numerical ranges are represented in RDF. When possible, dates are detected and represented " + 
-        	"the same way, using xsd^dateTime.",
+        	"This shows how numerical ranges are represented in RDF. When possible, date ranges are detected and 
+        	"represented the same way, using xsd^dateTime.",
         query:
-					"# \n" +
+					"#\n" +
 					"# Property values with ranges\n" +
 					"#\n" +
 					"select distinct ?item ?lo ?hi ?vlabel ?pTypeLabel ?unitClass \n" +
@@ -135,7 +175,7 @@ var exampleQueries = [
 					"  ?item biosd-terms:has-bio-characteristic ?pv.\n" +
 					"    \n" +
 					"  ?pv \n" +
-					"    a ?ptype;\n" +
+					"    biosd-terms:has-bio-characteristic-type ?ptype;\n" +
 					"    biosd-terms:has-low-value ?lo;\n" +
 					"    biosd-terms:has-high-value ?hi;\n" +
 					"    rdfs:label ?vlabel. # contains a string composed with value and unit\n" +
@@ -154,7 +194,7 @@ var exampleQueries = [
 					"    FILTER ( ?unitClass != owl:NamedIndividual ).  \n" +
 					"    FILTER ( ?unitClass != sio:SIO_000074 ). # unit, obvious  \n" +
 					"  }\n" +
-					"}\n"         
+					"}\n" 
 			}, 
 			
 			{
@@ -162,24 +202,24 @@ var exampleQueries = [
         	"Geographically located samples",
         description:
         	"Another query based on numerical values, to find samples associated to a latitude and longitude.",
-        query: 			
-          "#\n" + 
-          "# Samples reporting latitude and longitude\n" +
-          "#\n" +
+        query:
+					"#\n" +
+					"# Samples reporting latitude and longitude\n" +
+					"#\n" +
 					"SELECT DISTINCT ?item ?latVal ?longVal WHERE {\n" +
 					"  ?item biosd-terms:has-bio-characteristic ?latPv, ?longPv.\n" +
 					"    \n" +
 					"  ?latPv \n" +
-					"    a [ rdfs:label ?latLabel];\n" +
+					"    biosd-terms:has-bio-characteristic-type [ rdfs:label ?latLabel];\n" +
 					"    sio:SIO_000300 ?latVal. # sio:has value\n" +
 					"\n" +
-					"  FILTER ( REGEX ( ?latLabel, \"latitude\", \"i\" ) ).\n" +
+					"  FILTER ( REGEX ( ?latLabel, "latitude", "i" ) ).\n" +
 					"       \n" +
 					"  ?longPv \n" +
-					"    a [ rdfs:label ?longLabel ];\n" +
+					"    biosd-terms:has-bio-characteristic-type [ rdfs:label ?longLabel ];\n" +
 					"    sio:SIO_000300 ?longVal. # sio:has value\n" +
 					"\n" +
-					"  FILTER ( REGEX ( ?longLabel, \"longitude\", \"i\" ) ).\n" +
+					"  FILTER ( REGEX ( ?longLabel, "longitude", "i" ) ).\n" +
 					"}\n"
 			}		
 ]
