@@ -52,8 +52,8 @@ var exampleQueries = [
 				"    rdfs:label ?propTypeLabel.\n" +
 				"\n" +
 				"\n" +
-				"  FILTER ( LCASE ( STR ( ?propTypeLabel ) ) = "organism" ).\n" +
-				"  FILTER ( LCASE ( STR ( ?pvLabel ) ) = "homo sapiens" ).\n" +
+				"  FILTER ( LCASE ( STR ( ?propTypeLabel ) ) = \"organism\" ).\n" +
+				"  FILTER ( LCASE ( STR ( ?pvLabel ) ) = \"homo sapiens\" ).\n" +
 				"\n" +
 				"  ?webRec\n" +
 				"    dcterms:identifier ?repoAcc;\n" +
@@ -151,7 +151,7 @@ var exampleQueries = [
 					"\n" +
 					"  FILTER ( ?tunitClass != owl:NamedIndividual ).  \n" +
 					"  FILTER ( ?tunitClass != sio:SIO_000074 ). # unit, obvious  \n" +
-					"  FILTER ( REGEX ( ?tunitLabel, "temperature", "i" ) ).\n" +
+					"  FILTER ( REGEX ( ?tunitLabel, \"temperature\", \"i\" ) ).\n" +
 					"\n" +
 					"  \n" +
 					"  ?tPv biosd-terms:has-bio-characteristic-type ?pvType.\n" +
@@ -163,7 +163,7 @@ var exampleQueries = [
         shortname :
         	"Attribute values with intervals.",
         description:
-        	"This shows how numerical ranges are represented in RDF. When possible, date ranges are detected and 
+        	"This shows how numerical ranges are represented in RDF. When possible, date ranges are detected and " +  
         	"represented the same way, using xsd^dateTime.",
         query:
 					"#\n" +
@@ -213,13 +213,13 @@ var exampleQueries = [
 					"    biosd-terms:has-bio-characteristic-type [ rdfs:label ?latLabel];\n" +
 					"    sio:SIO_000300 ?latVal. # sio:has value\n" +
 					"\n" +
-					"  FILTER ( REGEX ( ?latLabel, "latitude", "i" ) ).\n" +
+					"  FILTER ( REGEX ( ?latLabel, \"latitude\", \"i\" ) ).\n" +
 					"       \n" +
 					"  ?longPv \n" +
 					"    biosd-terms:has-bio-characteristic-type [ rdfs:label ?longLabel ];\n" +
 					"    sio:SIO_000300 ?longVal. # sio:has value\n" +
 					"\n" +
-					"  FILTER ( REGEX ( ?longLabel, "longitude", "i" ) ).\n" +
+					"  FILTER ( REGEX ( ?longLabel, \"longitude\", \"i\" ) ).\n" +
 					"}\n"
 			}		
 ]
