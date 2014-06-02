@@ -104,4 +104,15 @@
         <url-pattern>/status</url-pattern>
     </filter-mapping>
 
+
+		<!-- Brandizi: inserts useful server/client information into the log's MDC -->
+    <!-- filter>
+        <filter-name>LogMDCFilter</filter-name>
+        <filter-class>uk.ac.ebi.utils.servlet.logging.Slf4JMDCInsertingFilter</filter-class>
+    </filter> 
+    <filter-mapping>
+      <filter-name>LogMDCFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping -->
+
 </web-app>

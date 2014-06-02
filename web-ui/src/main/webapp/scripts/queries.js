@@ -69,7 +69,7 @@ var exampleQueries = [
         " the NCBI Taxonomy.",
       query:
 				"#\n" +
-				"## All samples that derives from a given organism (Listeria)\n" +
+				"## All samples that derives from a given organism (Listeria)\n" +
 				"#\n" +
 				"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel\n" +
 				"WHERE {\n" +
@@ -98,7 +98,7 @@ var exampleQueries = [
 				"## All samples treated with a compound of 'alchool' type or a more specific alchool type\n" +
 				"#  this is made through a query over the bioportal sparql endpoint (ie, a federated query)\n" +
 				"#\n" +
-				"SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvType\n" +
+				"SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvTypeClass\n" +
 				"{\n" +
 				"  SERVICE <http://sparql.bioontology.org/ontologies/sparql/?apikey=c6ae1b27-9f86-4e3c-9dcf-087e1156eabe> \n" +
 				"  {\n" +
@@ -130,8 +130,7 @@ var exampleQueries = [
 					"#\n" +
 					"## Samples with temperature attributes. DO REQUIRE Inference enabled\n" +
 					"#\n" +
-					"select distinct ?smp ?pvTypeLabel ?tvalLabel ?tval ?tunitLabel ?tunitClass\n" +
-					"where \n" +
+					"select distinct ?smp ?pvTypeLabel ?tvalLabel ?tval ?unitLabel\n" +
 					"{\n" +
 					"  ?smp \n" +
 					"    a biosd-terms:Sample;\n" +
@@ -140,23 +139,14 @@ var exampleQueries = [
 					"  ?tPv \n" +
 					"    sio:SIO_000300 ?tval; # sio:has value\n" +
 					"    rdfs:label ?tvalLabel; # contains a string composed with value and unit\n" +
-					"    sio:SIO_000221 [ a ?tunitClass ]. # sio:has unit\n" +
-					"  \n" +
-					"  \n" +
-					"  ?tunitClass \n" +
-					"    rdfs:subClassOf ?tunitClass1. # You can do this or use the inference flag\n" +
+					"    sio:SIO_000221 [ # sio:has unit\n" +
+					"      a obo:UO_0000027; # temperature\n" +
+					"      rdfs:label ?unitLabel\n" +
+					"    ].\n" +
 					"    \n" +
-					"  ?tunitClass1 \n" +
-					"    rdfs:label ?tunitLabel\n" +
-					"\n" +
-					"  FILTER ( ?tunitClass != owl:NamedIndividual ).  \n" +
-					"  FILTER ( ?tunitClass != sio:SIO_000074 ). # unit, obvious  \n" +
-					"  FILTER ( REGEX ( ?tunitLabel, \"temperature\", \"i\" ) ).\n" +
-					"\n" +
-					"  \n" +
 					"  ?tPv biosd-terms:has-bio-characteristic-type ?pvType.\n" +
 					"  ?pvType rdfs:label ?pvTypeLabel \n" +
-					"}\n"  
+					"}\n"
 			}, 
 			
 	    {

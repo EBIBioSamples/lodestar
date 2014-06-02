@@ -3,6 +3,8 @@
 
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
+            <!-- This version reports the client's IP, you need to enable the MDC filter, see web.xml  -->
+            <!-- param name="ConversionPattern" value="%d %-5p [%X{req.remoteHost} %t] %C{2} (%F:%L) - %m%n"/ -->
             <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
         </layout>
     </appender>
@@ -11,20 +13,20 @@
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
             <param name="File" value="${catalina.base}/logs/${tomcat.hostname}/biosamples.log"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+            <param name="ConversionPattern" value="%d %-5p [%X{req.remoteHost} %t] %C{2} (%F:%L) - %m%n"/>
         </layout>
     </appender>
 
-		<logger name="uk.ac.ebi.fgpt" additivity="false">
-      <level value="WARN"/>
+		<logger name="uk.ac.ebi.fgpt">
+      <level value="INFO"/>
     </logger>
 
-	  <logger name="org.springframework" additivity="false">
+	  <logger name="org.springframework">
       <level value="WARN"/>
     </logger>
 
     <root>
-        <priority value="WARN" />
+        <priority value="INFO" />
         <appender-ref ref="file" />
     </root>
 

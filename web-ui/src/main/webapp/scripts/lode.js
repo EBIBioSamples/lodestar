@@ -87,31 +87,12 @@ function _parseOptions(options) {
         'results_per_page' : 25,
         'inference' : true,
         'logging' : false,
-        'default_query' : 
-					"#\n" +
-					"## Samples with a given property value and type, and external links\n" +
-					"#\n" +
-					"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel ?repoName ?repoAcc ?repoUrl\n" +
+        'default_query' :
+					"SELECT DISTINCT *\n" +
 					"WHERE {\n" +
-					"  ?smp\n" +
-					"    a biosd-terms:Sample;\n" +
-					"    biosd-terms:has-bio-characteristic|obo:IAO_0000136 ?pv; # is about\n" +
-					"    pav:derivedFrom ?webRec.\n" +
-					"\n" +
-					"  ?pv\n" + 
-					"    a ?pvType;\n" +
-					"    rdfs:label ?pvLabel.\n" +
-					"\n" +
-					"  ?pvType\n" + 
-					"    rdfs:label ?propTypeLabel.\n" +
-					"\n" +
-					"  FILTER ( REGEX ( STR ( ?propTypeLabel ), \"^organism$\", \"i\" ) ).\n" +
-					"  FILTER ( REGEX ( STR ( ?pvLabel ), \".*sapiens.*\", \"i\" ) ).\n" +
-					"\n" +
-					"  ?webRec\n" +
-					"    dcterms:identifier ?repoAcc;\n" +
-					"    dcterms:source ?repoName;\n" +
-					"    foaf:page ?repoUrl.\n" +
+					"  { select ?item WHERE { ?item a biosd-terms:BiosamplesSubmission. } LIMIT 3}\n" +
+					"  UNION { select ?item { ?item a biosd-terms:SampleGroup. } LIMIT 3 }\n" +
+					"  UNION { select ?item { ?item a biosd-terms:Sample. } LIMIT 3 }\n" +
 					"}\n",
         'void_query' : "SELECT DISTINCT ?s ?p ?o \nwhere {?s a <http://rdfs.org/ns/void#Dataset>\n OPTIONAL {?s ?p ?o} }",
         'namespaces' : {
