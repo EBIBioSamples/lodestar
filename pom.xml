@@ -99,6 +99,9 @@
     <profiles>
         <profile>
                <id>virtuoso</id>
+               <activation>
+               	<activeByDefault>true</activeByDefault>
+               </activation>
                   <modules>
                       <module>lode-core-api</module>
                       <module>web-ui</module>
