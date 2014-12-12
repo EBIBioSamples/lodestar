@@ -2,11 +2,11 @@
     <parent>
         <artifactId>ebi-lode</artifactId>
         <groupId>ebi-lode</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>web-ui</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>web-ui Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -36,22 +36,15 @@
         </dependency>
 
         <dependency>
-					<groupId>${project.groupId}</groupId>
-          <artifactId>lode-core-servlet</artifactId>
-					<version>${project.version}</version>
+            <groupId>ebi-lode</groupId>
+            <artifactId>lode-core-servlet</artifactId>
+            <version>1.4-SNAPSHOT</version>
         </dependency>
-		
-				<dependency>
-					<groupId>${project.groupId}</groupId>
-					<artifactId>lode-virtuoso-impl</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-
 
         <dependency>
-	        <groupId>org.tuckey</groupId>
-	        <artifactId>urlrewritefilter</artifactId>
-	        <version>4.0.3</version>
+        <groupId>org.tuckey</groupId>
+        <artifactId>urlrewritefilter</artifactId>
+        <version>4.0.3</version>
         </dependency>
 
     </dependencies>
