@@ -63,13 +63,13 @@ var exampleQueries = [
     },
 
     {
-      shortname: "Samples that derives from a given organism",
+      shortname: "Samples that derives from a given genus",
       description: 
-      	"Samples derived from the Listeria organism or specific types of listeria, as they are classified by." +
+      	"Samples derived from the mus mus genus or specific organisms under it, as they are classified by." +
         " the NCBI Taxonomy.",
       query:
 				"#\n" +
-				"## All samples that derives from a given organism (Listeria)\n" +
+				"## All samples that derives from a given genus (Mus)\n" +
 				"#\n" +
 				"SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel\n" +
 				"WHERE {\n" +
@@ -80,16 +80,16 @@ var exampleQueries = [
 				"  \n" +
 				"  ?pvType a ?pvTypeClass.\n" +
 				"  \n" +
-				"  # Listeria\n" +
+				"  # Mus\n" +
 				"  ?pvTypeClass \n" +
 				"    rdfs:label ?propTypeLabel;\n" +
-				"    # '*' gives you transitive closure, even when inference is didsbled  \n" +
-				"    rdfs:subClassOf* <http://purl.obolibrary.org/obo/NCBITaxon_1637>    \n" +
+				"    # '*' gives you transitive closure, even when inference is disabled  \n" +
+				"    rdfs:subClassOf* <http://purl.obolibrary.org/obo/NCBITaxon_10088>    \n" +
 				"}\n"
     },
 
     {
-      shortname: "Samples treated with alchool",
+      shortname: "Samples treated with alcohol",
       description: 
       	"Samples treated with a compound of 'alchool' type, or a more specific type of alchool." +
         " This is made through a query over the bioportal sparql endpoint (i.e., a federated query).",
