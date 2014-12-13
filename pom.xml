@@ -97,19 +97,20 @@
     </distributionManagement>
 
     <profiles>
-        <profile>
-               <id>virtuoso</id>
-               <activation>
-               	<activeByDefault>true</activeByDefault>
-               </activation>
-                  <modules>
-                      <module>lode-core-api</module>
-                      <module>web-ui</module>
-                      <module>lode-core-servlet</module>
-                      <module>lode-virtuoso-impl</module>
-                  </modules>
-              </profile>
+			<profile>
+				<id>virtuoso</id>
+				<activation>
+				<activeByDefault>true</activeByDefault>
+				</activation>
+			  <modules>
+				  <module>lode-core-api</module>
+				  <module>web-ui</module>
+				  <module>lode-core-servlet</module>
+				  <module>lode-virtuoso-impl</module>
+			  </modules>
+			</profile>
     </profiles>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

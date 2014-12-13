@@ -6,7 +6,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>web-ui</artifactId>
-    <version>1.4-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>web-ui Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -23,7 +22,6 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
 
             <scope>runtime</scope>
         </dependency>
@@ -31,15 +29,14 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>${org.slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>ebi-lode</groupId>
-            <artifactId>lode-core-servlet</artifactId>
-            <version>1.4-SNAPSHOT</version>
-        </dependency>
+				<dependency>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>lode-core-servlet</artifactId>
+					<version>${project.version}</version>
+				</dependency>
 
         <dependency>
         <groupId>org.tuckey</groupId>
@@ -77,6 +74,20 @@
                 </resources>
             </build>
         </profile>
+
+				<profile>
+					<id>virtuoso</id>
+					<activation>
+					<activeByDefault>true</activeByDefault>
+					</activation>
+					<dependencies>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>lode-virtuoso-impl</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+					</dependencies>
+				</profile>
     </profiles>
 
 </project>
