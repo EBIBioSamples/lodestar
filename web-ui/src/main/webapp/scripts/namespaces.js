@@ -20,6 +20,7 @@ var lodeNamespacePrefixes = {
     efo: 'http://www.ebi.ac.uk/efo/',
     'biosd-terms': 'http://rdf.ebi.ac.uk/terms/biosd/',
     pav: 'http://purl.org/pav/2.0/',
+    prov: 'http://www.w3.org/ns/prov#',
     foaf: 'http://xmlns.com/foaf/0.1/',
     sio: 'http://semanticscience.org/resource/'
 };

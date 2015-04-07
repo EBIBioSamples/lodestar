@@ -211,5 +211,19 @@ var exampleQueries = [
 					"\n" +
 					"  FILTER ( REGEX ( ?longLabel, \"longitude\", \"i\" ) ).\n" +
 					"}\n"
-			}		
+			},
+			{
+	      shortname :
+	      	"Provenance Graph",
+	      description:
+	      	"Shows how samples were derived from other samples.",
+	      query:
+					"#\n" +
+					"# Derivation relationships\n" +
+					"#\n" +
+					"SELECT DISTINCT ?smpTo ?smpFrom WHERE {\n" +
+	      	"	{ ?smpTo prov:wasDerivedFrom ?smpFrom } # Every statement like this has also sio:SIO_000244 (derived from)\n" +
+	      	"		UNION { ?smpFrom sio:SIO_000245 ?smpTo } # this is derived into and there is no equivalent in prov\n" +
+	      	"}\n"
+			}			
 ]
