@@ -11,16 +11,17 @@
  */
 
 var lodeNamespacePrefixes = {
-    rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-    owl: 'http://www.w3.org/2002/07/owl#',
-    dc: 'http://purl.org/dc/elements/1.1/',
-    dcterms: 'http://purl.org/dc/terms/',
-    obo: 'http://purl.obolibrary.org/obo/',
-    efo: 'http://www.ebi.ac.uk/efo/',
-    'biosd-terms': 'http://rdf.ebi.ac.uk/terms/biosd/',
-    pav: 'http://purl.org/pav/2.0/',
-    prov: 'http://www.w3.org/ns/prov#',
-    foaf: 'http://xmlns.com/foaf/0.1/',
-    sio: 'http://semanticscience.org/resource/'
+    rdf: 									'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    rdfs: 								'http://www.w3.org/2000/01/rdf-schema#',
+    owl: 									'http://www.w3.org/2002/07/owl#',
+    dc: 									'http://purl.org/dc/elements/1.1/',
+    dcterms: 							'http://purl.org/dc/terms/',
+    obo: 									'http://purl.obolibrary.org/obo/',
+    efo: 									'http://www.ebi.ac.uk/efo/',
+    'biosd-terms': 				'http://rdf.ebi.ac.uk/terms/biosd/',
+    pav: 									'http://purl.org/pav/2.0/',
+    prov: 								'http://www.w3.org/ns/prov#',
+    foaf: 								'http://xmlns.com/foaf/0.1/',
+    sio: 									'http://semanticscience.org/resource/',
+    atlas: 								'http://rdf.ebi.ac.uk/terms/atlas/'
 };

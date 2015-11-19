@@ -74,10 +74,10 @@ var exampleQueries =
 
 	{
 	  shortname : "Samples treated with alcohol",
-	  description : "Samples treated with a compound of 'alchool' type, or a more specific type of alchool."
+	  description : "Samples treated with a compound of 'alcohol' type, or a more specific type of alcohol."
 		  + " This is made through a query over the bioportal sparql endpoint (i.e., a federated query).",
 	  query : "#\n"
-		  + "## All samples treated with a compound of 'alchool' type or a more specific alchool type\n"
+		  + "## All samples treated with a compound of 'alcohol' type or a more specific alcohol type\n"
 		  + "#  this is made through a query over the bioportal sparql endpoint (ie, a federated query)\n"
 		  + "#\n"
 		  + "SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvTypeClass\n"
@@ -100,7 +100,7 @@ var exampleQueries =
 	{
 	  shortname : "Temperature values and units",
 	  description : "This shows how numerical values and units are represented in RDF. When possible, dates are detected and represented "
-		  + "the same way, using xsd^dateTime. This query requires that you tick on the inference box.",
+		  + "the same way, using xsd^dateTime.",
 	  query : "#\n"
 		  + "## Samples with temperature attributes. DO REQUIRE Inference enabled\n"
 		  + "#\n"
