@@ -15,7 +15,8 @@ var exampleQueries =
 	{
 	  shortname : "Show main resources",
 	  description : "An example that selects Sample Groups, Samples, the main resource types in the dataset.",
-	  query : "SELECT DISTINCT *\n"
+	  query : 
+	  		"SELECT DISTINCT *\n"
 		  + "WHERE {\n"
 		  + "  { select ?item WHERE { ?item a biosd-terms:BiosamplesSubmission. } LIMIT 3}\n"
 		  + "  UNION { select ?item { ?item a biosd-terms:SampleGroup. } LIMIT 3 }\n"
@@ -26,7 +27,8 @@ var exampleQueries =
 	{
 	  shortname : "Samples from homo sapiens and their provenance",
 	  description : "Shows how to get and filter sample attributes. It also shows how the web pages on the provenance databases are linked.",
-	  query : "#\n"
+	  query : 
+	  		"#\n"
 		  + "## Samples with a given property value and type, and external links\n"
 		  + "## This version doesn't exploit any ontology for sample properties.\n"
 		  + "#\n"
@@ -54,7 +56,8 @@ var exampleQueries =
 	  shortname : "Samples that derives from a given genus",
 	  description : "Samples derived from the mus mus genus or specific organisms under it, as they are classified by."
 		  + " the NCBI Taxonomy.",
-	  query : "#\n"
+	  query : 
+	  		"#\n"
 		  + "## All samples that derives from a given genus (Mus)\n"
 		  + "#\n"
 		  + "SELECT DISTINCT ?smp ?pvLabel ?propTypeLabel\n"
@@ -76,17 +79,18 @@ var exampleQueries =
 	  shortname : "Samples treated with alcohol",
 	  description : "Samples treated with a compound of 'alcohol' type, or a more specific type of alcohol."
 		  + " This is made through a query over the bioportal sparql endpoint (i.e., a federated query).",
-	  query : "#\n"
+	  query : 
+	  	  "#\n"
 		  + "## All samples treated with a compound of 'alcohol' type or a more specific alcohol type\n"
 		  + "#  this is made through a query over the bioportal sparql endpoint (ie, a federated query)\n"
 		  + "#\n"
-		  + "SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvTypeClass\n"
+		  + "SELECT DISTINCT ?smp ?pvLabel ?pvTypeLabel ?pvTypeClass ?pvTypeClassLabel\n"
 		  + "WHERE {\n"
 		  + "  SERVICE <http://sparql.bioontology.org/ontologies/sparql/?apikey=c6ae1b27-9f86-4e3c-9dcf-087e1156eabe>\n"
 		  + "  {\n"
 		  + "	?pvTypeClass\n"
 		  + "	  rdfs:subClassOf <http://purl.obolibrary.org/obo/CHEBI_30879>;\n"
-		  + "	  rdfs:label ?pvTypeLabel.\n"
+		  + "	  rdfs:label ?pvTypeClassLabel.\n"
 		  + "  }\n"
 		  + "\n"
 		  + "  ?pv\n"
@@ -101,7 +105,8 @@ var exampleQueries =
 	  shortname : "Temperature values and units",
 	  description : "This shows how numerical values and units are represented in RDF. When possible, dates are detected and represented "
 		  + "the same way, using xsd^dateTime.",
-	  query : "#\n"
+	  query : 
+	  	  "#\n"
 		  + "## Samples with temperature attributes. DO REQUIRE Inference enabled\n"
 		  + "#\n"
 		  + "SELECT DISTINCT ?smp ?pvTypeLabel ?tvalLabel ?tval ?unitLabel\n"
@@ -124,7 +129,8 @@ var exampleQueries =
 	  shortname : "Attribute values with intervals.",
 	  description : "This shows how numerical ranges are represented in RDF. When possible, date ranges are detected and "
 		  + "represented the same way, using xsd^dateTime.",
-	  query : "#\n"
+	  query : 
+	  	  "#\n"
 		  + "# Property values with ranges\n"
 		  + "#\n"
 		  + "SELECT DISTINCT ?item ?lo ?hi ?vlabel ?pTypeLabel ?unitClass \n"
@@ -148,7 +154,8 @@ var exampleQueries =
 	{
 	  shortname : "Geographically located samples",
 	  description : "Another query based on numerical values, to find samples associated to a latitude and longitude.",
-	  query : "#\n" + "# Samples reporting latitude and longitude\n" + "#\n"
+	  query : 
+	  	  "#\n" + "# Samples reporting latitude and longitude\n" + "#\n"
 		  + "SELECT DISTINCT ?item ?latVal ?longVal\n" + "WHERE {\n"
 		  + "  ?item biosd-terms:has-bio-characteristic ?latPv, ?longPv.\n"
 		  + "\n" + "  ?latPv\n" + "	dc:type ?latLabel;\n"
@@ -163,13 +170,42 @@ var exampleQueries =
 	{
 	  shortname : "Provenance Graph",
 	  description : "Shows how samples were derived from other samples.",
-	  query : "#\n"
+	  query : 
+	  		"#\n"
 		  + "# Derivation relationships\n"
 		  + "#\n"
 		  + "SELECT DISTINCT ?smpTo ?smpFrom\n"
 		  + "WHERE {\n"
 		  + "	{ ?smpTo prov:wasDerivedFrom ?smpFrom } # Every statement like this has also sio:SIO_000244 (derived from)\n"
 		  + "		UNION { ?smpFrom sio:SIO_000245 ?smpTo } # this is 'derived into', prov:hadDerivation is also asserted\n"
+		  + "   #Other sample relationships available:\n"
+		  + "   UNION { ?smpFrom owl:sameAs ?smpTo}\n"
+		  + "   UNION { ?smpTo owl:sameAs ?smpFrom}\n"
+		  + "   UNION { ?smpTo biosd-terms:sample-child-of ?smpFrom}\n"
+		  + "   UNION { ?smpFrom biosd-terms:sample-parent-of ?smpTo}\n"
 		  + "}\n"
-	} 
+	},
+	
+	{
+	  shortname : "Provenance of Ontology Annotations",
+	  description : "Shows how samples were derived from other samples.",
+	  query : 
+	  		"#\n"
+	  	+ "# Property annotations are usually got from the ZOOMA tool and have a quality score\n"
+	  	+ "# \n"
+	  	+ "select distinct ?pv ?pvlabel ?ptype ?prov ?score\n"
+	  	+ "{\n"
+	  	+ "   ?smp a biosd-terms:Sample;\n"
+	  	+ "    biosd-terms:has-bio-characteristic ?pv.\n"
+	  	+ "\n"
+	  	+ "  ?pv a ?ptype;\n"
+	  	+ "      rdfs:label ?pvlabel.\n"
+	  	+ "\n"
+	  	+ "  ?ann a biosd-terms:SampleAttributeOntologyAnnotation;\n"
+	  	+ "       oac:hasTarget ?pv; \n"
+	  	+ "       oac:hasBody ?ptype;\n"
+	  	+ "       dc:creator ?prov;   # currently it's always 'ZOOMA'\n"
+	  	+ "       biosd-terms:has-percent-score ?score\n"
+	  	+ "}\n"
+	  }	
 ]

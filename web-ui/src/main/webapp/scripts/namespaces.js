@@ -23,5 +23,6 @@ var lodeNamespacePrefixes = {
     prov: 								'http://www.w3.org/ns/prov#',
     foaf: 								'http://xmlns.com/foaf/0.1/',
     sio: 									'http://semanticscience.org/resource/',
-    atlas: 								'http://rdf.ebi.ac.uk/terms/atlas/'
+    atlas: 								'http://rdf.ebi.ac.uk/terms/atlas/',
+    oac:									'http://www.openannotation.org/ns/'
 };
