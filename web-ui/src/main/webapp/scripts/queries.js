@@ -54,7 +54,7 @@ var exampleQueries =
 
 	{
 	  shortname : "Samples that derives from a given genus",
-	  description : "Samples derived from the mus mus genus or specific organisms under it, as they are classified by."
+	  description : "Samples derived from the mus mus genus or specific organisms under it, as they are classified by"
 		  + " the NCBI Taxonomy.",
 	  query : 
 	  		"#\n"
